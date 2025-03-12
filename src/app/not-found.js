@@ -10,6 +10,8 @@ export default function Custom404() {
   const cloudRef = useRef(null);
 
   useEffect(() => {
+    if (typeof window === "undefined") return; // Vérifier si on est côté client
+
     // ---- Animation Matter.js ----
     const { Engine, Render, Runner, World, Bodies, Composite } = Matter;
     const engine = Engine.create();
@@ -151,26 +153,35 @@ export default function Custom404() {
     };
   }, []);
 
+  // ---- Gestion du pointeur sur l'élément "move" ----
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      const handlePointerMove = (event) => {
+        const { clientX, clientY } = event;
 
-  document.body.onpointermove = (event) => {
-    const { clientX, clientY } = event;
-  
-    // Récupérer l'élément "move"
-    const move = document.getElementById("move");
-    if (!move) return;
-  
-    const offsetX = move.offsetWidth - 40 ; // Largeur de l'élément
-    const offsetY = 20;              // Décalage vertical (par exemple 20px)
-  
-    move.animate(
-      {
-        left: `${clientX + offsetX}px`, // Position à droite de la souris
-        top: `${clientY + offsetY}px`,  // Décalage vertical en bas
-      },
-      { duration: 1000, fill: "forwards" }
-    );
-  };
-  
+        const move = document.getElementById("move");
+        if (!move) return;
+
+        const offsetX = move.offsetWidth - 40; // Largeur de l'élément
+        const offsetY = 20; // Décalage vertical
+
+        move.animate(
+          {
+            left: `${clientX + offsetX}px`, // Position à droite de la souris
+            top: `${clientY + offsetY}px`, // Décalage vertical
+          },
+          { duration: 1000, fill: "forwards" }
+        );
+      };
+
+      document.body.onpointermove = handlePointerMove;
+
+      return () => {
+        document.body.onpointermove = null; // Cleanup
+      };
+    }
+  }, []);
+
   return (
     <div>
       <audio autoPlay loop>
@@ -179,7 +190,7 @@ export default function Custom404() {
       </audio>
       <div className={styles.move} id="move">Click to go back Home</div>
       <Link href={"/"} className="pageLink">
-      <div ref={sceneRef} className={styles.sceneRef}></div>
+        <div ref={sceneRef} className={styles.sceneRef}></div>
       </Link>
       <div ref={cloudRef} className={styles.cloud}></div>
     </div>
