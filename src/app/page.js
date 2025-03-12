@@ -17,6 +17,7 @@ export default function Home() {
     const cleanupScrollPercentage = initializeScrollPercentage();
     const cleanupMouseButton = initializeMouseButton(buttonRef);
 
+
     // Vérifier que GSAP et Draggable sont disponibles
     gsap.registerPlugin(Draggable);
 
@@ -95,7 +96,10 @@ export default function Home() {
       cleanupMouseButton();
 
       // Nettoyage des Draggables
-      Draggable.getAll().forEach((draggable) => draggable.kill());
+      const draggables = Draggable.getAll?.();
+      if (draggables && draggables.length > 0) {
+        draggables.forEach((draggable) => draggable.kill());
+      }
     };
   }, []);
 
