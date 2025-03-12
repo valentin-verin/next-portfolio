@@ -1,0 +1,24 @@
+[
+    {
+      "id": 1,
+      "title": "Projet 1",
+      "description": "Une description du projet 1. Ce projet a pour objectif de ...",
+      "link": "https://mon-projet1.com",
+      "image": "/images/project1.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Projet 2",
+      "description": "Une description du projet 2. Ce projet est une application de ...",
+      "link": "https://mon-projet2.com",
+      "image": "/images/project2.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Projet 3",
+      "description": "Une description du projet 3. Ce projet permet de ...",
+      "link": "https://mon-projet3.com",
+      "image": "/images/project3.jpg"
+    }
+  ]
+  

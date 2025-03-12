@@ -1,0 +1,55 @@
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.footer {
+  display: none;
+}
+
+.cloud {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none; /* Pour éviter que la pluie interfère avec les clics */
+    z-index: 10;
+    cursor: default;
+  }
+  
+  .text {
+    position: absolute;
+    color: rgba(0, 0, 0, 0.2);
+    animation: fall linear infinite;
+  }
+  
+  @keyframes fall {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(100vh);
+    }
+  }
+  
+
+
+  .move {
+    color: rgb(77, 77, 77);
+    font-size: 12px;
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: 2px 2px 20px #FFFFFF;
+    background: none;   
+    left: -10%;
+    top: -10%;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    cursor: pointer;
+    min-width: max-content;
+    z-index: 999;
+}
