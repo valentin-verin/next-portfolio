@@ -191,3 +191,49 @@
 .box:active {
   cursor: grabbing;
 }
+
+
+
+.speaker {
+  display: flex;
+  flex-direction: columns;
+  align-items: center;
+  height: fit-content;
+  width: 32px;
+  position: relative;
+  z-index: 100;
+}
+
+.soundBox {
+  height :24px;
+  width: 2px;
+  background-color: rgb(77, 77, 77);
+  transition: height 1s ease-in-out; /* Transition fluide pour les hauteurs */
+
+}
+
+#soundBox1 {
+  height: 8px;
+}
+#soundBox2 {
+  height: 8px;
+    margin-right: 2px
+}
+#soundBox3 {
+  height: 8px;
+}
+#soundBox4 {
+  height: 10px;
+}
+#soundBox5 {
+  height: 12px;
+}
+#soundBox6 {
+  height: 14px;
+}
+#soundBox7 {
+  height: 18px;
+}
+#soundBox8 {
+  height: 20px;
+}
