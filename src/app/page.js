@@ -5,6 +5,7 @@ import Footer from "./footer";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 import styles from "./page.module.css";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function Home() {
   const [heightsAdjusted, setHeightsAdjusted] = useState(false); // Suivi si les hauteurs ont été ajustées
@@ -17,77 +18,146 @@ export default function Home() {
     const cleanupHandScroll = initializeHandScroll();
     const cleanupScrollPercentage = initializeScrollPercentage();
     const cleanupMouseButton = initializeMouseButton(buttonRef);
+    const oneDataElements = gsap.utils.toArray(`.${styles.oneData}`);
 
+    //console.log(oneDataElements);
 
     // Vérifier que GSAP et Draggable sont disponibles
-    gsap.registerPlugin(Draggable);
+    gsap.registerPlugin(Draggable, ScrollTrigger);
+
+    // div reveal
+    oneDataElements.forEach((element, index) => {
+      gsap.from(element, {
+        opacity: 0,
+        y: 50, // Déplacement vertical initial
+        duration: 1, // Durée de chaque animation
+        ease: "power2.out", // Courbe d'animation
+        stagger: 0.3, // Décalage entre chaque animation (un par un)
+        scrollTrigger: {
+          trigger: element, // Chaque élément est maintenant un trigger individuel
+          start: "top 75%", // L'animation commence lorsque le haut de l'élément atteint 80% de la fenêtre
+          end: "top 20%", // L'animation continue jusqu'à ce que l'élément atteigne 20% de la fenêtre
+          toggleActions: "play none none none", // Joue l'animation uniquement une fois
+        },
+      });
+    });
+
 
     // Initialisation des boîtes draggable
-    if (boxesContainerRef.current) {
-      const boxes = gsap.utils.toArray(".draggable-box");
-      if (boxes.length > 0) {
-        console.log("Boîtes trouvées :", boxes);
+if (boxesContainerRef.current) {
+  const boxes = gsap.utils.toArray(".draggable-box");
+  if (boxes.length > 0) {
+    console.log("Boîtes trouvées :", boxes);
 
-        const containerRect = boxesContainerRef.current.getBoundingClientRect();
+    const containerRect = boxesContainerRef.current.getBoundingClientRect();
 
-        // Boîtes qui seront rendues draggable (toutes sauf la cinquième)
-        const draggableBoxes = [];
+    // Boîtes qui seront rendues draggable (toutes sauf la cinquième)
+    const draggableBoxes = [];
 
-        boxes.forEach((box, index) => {
-          if (index === 4) {
-            // Positionner la cinquième boîte au centre
-            const centerX = (containerRect.width - box.offsetWidth) / 2;
-            const centerY = (containerRect.height - box.offsetHeight) / 2;
+    boxes.forEach((box, index) => {
+      if (index === 4) {
+        // Positionner la cinquième boîte au centre
+        const centerX = (containerRect.width - box.offsetWidth) / 2;
+        const centerY = (containerRect.height - box.offsetHeight) / 2;
 
-            gsap.set(box, { x: centerX, y: centerY });
-          } else {
-            // Ajouter cette boîte à la liste des draggables
-            draggableBoxes.push(box);
-          }
-        });
-
-        // Animation pour repositionner les boîtes
-        const totalChanges = 20; // Nombre total de changements de position
-        const totalDuration = 500; // Durée totale en millisecondes (5 secondes)
-        let interval = totalDuration / totalChanges; // Temps initial entre chaque changement
-
-        let changes = 0; // Compteur de changements
-
-        const repositionBoxes = () => {
-          draggableBoxes.forEach((box) => {
-            const randomX = gsap.utils.random(
-              0,
-              containerRect.width - box.offsetWidth
-            );
-            const randomY = gsap.utils.random(
-              0,
-              containerRect.height - box.offsetHeight
-            );
-            gsap.to(box, {
-              x: randomX,
-              y: randomY,
-              duration: 1,
-              ease: "expo.out",
-            }); // Très lent vers la fin
-          });
-
-          changes += 1;
-          if (changes < totalChanges) {
-            interval *= 1.1; // Augmenter le délai progressivement
-            setTimeout(repositionBoxes, interval);
-          }
-        };
-
-        // Lancer la première animation
-        repositionBoxes();
-
-        // Rendre les boîtes (sauf la cinquième) draggable après l'animation
-        Draggable.create(draggableBoxes, {
-          bounds: window,
-          zIndexBoost: true, // Améliorer le z-index au clic
-        });
+        gsap.set(box, { x: centerX, y: centerY });
+      } else {
+        // Ajouter cette boîte à la liste des draggables
+        draggableBoxes.push(box);
       }
+    });
+
+    // Animation pour repositionner les boîtes
+    const totalChanges = 20; // Nombre total de changements de position
+    const totalDuration = 500; // Durée totale en millisecondes (5 secondes)
+    let interval = totalDuration / totalChanges; // Temps initial entre chaque changement
+
+    let changes = 0; // Compteur de changements
+
+    const repositionBoxes = () => {
+      draggableBoxes.forEach((box) => {
+        const randomX = gsap.utils.random(
+          0,
+          containerRect.width - box.offsetWidth
+        );
+        const randomY = gsap.utils.random(
+          0,
+          containerRect.height - box.offsetHeight
+        );
+        gsap.to(box, {
+          x: randomX,
+          y: randomY,
+          duration: 3,
+          ease: "expo.out",
+        }); // Très lent vers la fin
+      });
+
+      changes += 1;
+      if (changes < totalChanges) {
+        interval *= 1.2; // Augmenter le délai progressivement
+        setTimeout(repositionBoxes, interval);
+      }
+    };
+
+    // Lancer la première animation
+    repositionBoxes();
+
+    // Rendre les boîtes (sauf la cinquième) draggable après l'animation
+    Draggable.create(draggableBoxes, {
+      bounds: boxesContainerRef.current, // Limiter le déplacement au conteneur
+      zIndexBoost: true, // Améliorer le z-index au clic
+    });
+  }
+}
+
+
+    // S'assurer que ScrollTrigger est bien chargé
+  gsap.registerPlugin(ScrollTrigger);
+
+  const cards = [
+      { id: `.${styles.card1}`, endTranslatex: -2000, rotate: 45 },
+      { id: `.${styles.card2}`, endTranslatex: -1000, rotate: -30 },
+      { id: `.${styles.card3}`, endTranslatex: -2000, rotate: 45 },
+      { id: `.${styles.card4}`, endTranslatex: -1500, rotate: -30 },
+  ];
+
+  // Créer un ScrollTrigger pour animer la wrapper-404
+  ScrollTrigger.create({
+    trigger: `.${styles.wrapper404}`,
+    start: "top top",
+    end: "+=900vh",  // Ajuste la fin de la section pour couvrir une plus grande portion
+    scrub: true, // Plus fluide
+    pin: true,
+    onUpdate: (self) => {
+      gsap.to(`.${styles.wrapper404}`, {
+        x: `${-770 * self.progress}vw`,  // Ralentir le défilement horizontal
+        duration: 0.5,
+        ease: "power3.out",
+      });
+    },
+  });
+
+  const cardElements = gsap.utils.toArray(`.${styles.card}`);
+
+  cardElements.forEach((card, index) => {
+    const config = cards[index];
+    if (config) {
+      ScrollTrigger.create({
+        trigger: card,
+        start: "top top",
+        end: "+=1200vh",
+        scrub: 1,
+        onUpdate: (self) => {
+          gsap.to(card, {
+            x: `${config.endTranslatex * self.progress * 0.5}px`,
+            rotate: `${config.rotate * self.progress * 2}`,
+            duration: 0.5,
+            ease: "power3.out",
+          });
+        },
+      });
     }
+  });
 
 
     // Nettoyage des effets au démontage
@@ -96,69 +166,79 @@ export default function Home() {
       cleanupHandScroll();
       cleanupScrollPercentage();
       cleanupMouseButton();
-      
+
       // Nettoyage des Draggables
       const draggables = Draggable.getAll?.();
       if (draggables && draggables.length > 0) {
         draggables.forEach((draggable) => draggable.kill());
       }
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
 
-    // Fonction qui modifie les hauteurs et ajoute un margin-right avec délai pour la soundBox
-    function adjustHeights() {
-      console.log("adjustHeights appelé");
-  
-      // Tailles originales des boxes
-      const originalHeights = [8, 8, 8, 10, 12, 14, 18, 20]; // Mets ici les tailles d'origine
-      const newHeights = [4, 8, 10, 18, 28, 20, 12, 16];
-  
-      const boxes = document.querySelectorAll(`.${styles.soundBox}`);
-      const audioElement = document.getElementById("a1");
-  
-      if (boxes.length === 0) {
-        console.log("Aucune boîte trouvée !");
-        return;
-      }
-  
-      // Si les hauteurs ont déjà été ajustées, on remet les tailles d'origine
-      if (heightsAdjusted) {
-        console.log("Remettre les tailles d'origine");
-  
-        boxes.forEach((box, index) => {
-          setTimeout(() => {
-            box.style.height = `${originalHeights[index]}px`;
-            box.style.marginRight = index === 1 ? "2px" : "0px"; // Ajout de 2px pour la deuxième boîte
-          }, index * 100);
-        });
-  
-        // Stopper l'audio
-        if (audioElement) {
-          audioElement.pause();
-          audioElement.currentTime = 0; // Remettre l'audio au début
-        }
-  
-        setHeightsAdjusted(false); // Réinitialise l'état des tailles
-      } else {
-        console.log("Ajuster les hauteurs");
-  
-        boxes.forEach((box, index) => {
-          setTimeout(() => {
-            box.style.height = `${newHeights[index]}px`;
-            box.style.marginRight = "2px"; // Ajoute une marge à droite
-          }, index * 100);
-        });
-  
-        // Jouer l'audio
-        if (audioElement) {
-          audioElement.play();
-        }
-  
-        setHeightsAdjusted(true); // Les hauteurs ont été ajustées
-      }
+
+
+
+
+
+
+  // Fonction qui modifie les hauteurs et ajoute un margin-right avec délai pour la soundBox
+  function adjustHeights() {
+    console.log("adjustHeights appelé");
+
+    // Tailles originales des boxes
+    const originalHeights = [8, 8, 8, 10, 12, 14, 18, 20]; // Mets ici les tailles d'origine
+    const newHeights = [4, 8, 10, 18, 28, 20, 12, 16];
+
+    const boxes = document.querySelectorAll(`.${styles.soundBox}`);
+    const audioElement = document.getElementById("a1");
+
+    if (boxes.length === 0) {
+      console.log("Aucune boîte trouvée !");
+      return;
     }
-    
+
+    // Si les hauteurs ont déjà été ajustées, on remet les tailles d'origine
+    if (heightsAdjusted) {
+      console.log("Remettre les tailles d'origine");
+
+      boxes.forEach((box, index) => {
+        setTimeout(() => {
+          box.style.height = `${originalHeights[index]}px`;
+          box.style.marginRight = index === 1 ? "2px" : "0px"; // Ajout de 2px pour la deuxième boîte
+        }, index * 100);
+      });
+
+      // Stopper l'audio
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.currentTime = 0; // Remettre l'audio au début
+      }
+
+      setHeightsAdjusted(false); // Réinitialise l'état des tailles
+    } else {
+      console.log("Ajuster les hauteurs");
+
+      boxes.forEach((box, index) => {
+        setTimeout(() => {
+          box.style.height = `${newHeights[index]}px`;
+          box.style.marginRight = "2px"; // Ajoute une marge à droite
+        }, index * 100);
+      });
+
+      // Jouer l'audio
+      if (audioElement) {
+        audioElement.play();
+      }
+
+      setHeightsAdjusted(true); // Les hauteurs ont été ajustées
+    }
+  }
+
+
+
+
 
 
 
@@ -336,6 +416,46 @@ export default function Home() {
             <p>C# - ASP.NET Core Blazor - IBM DB2 - ClickUp</p>
           </div>
         </div>
+
+
+
+
+
+        <div className={styles.container}>
+        <section className={styles.wrapper404}>
+            <h1>TOOLS THAN I USE MORE THAN MY LEGS</h1>
+            <div className={styles.card} id={styles.card1}>
+            <img
+            src={`/img/P10.png`}
+            className={`${styles.fImg}`}
+          />
+            </div>
+            <div className={styles.card} id={styles.card2}>
+            <img
+            src={`/img/P10.png`}
+            alt="Draggable"
+            className={`${styles.fImg}`}
+          />
+            </div>
+            <div className={styles.card} id={styles.card3}>
+            <img
+            src={`/img/P10.png`}
+            className={`${styles.fImg}`}
+          />
+            </div>
+            <div className={styles.card} id={styles.card4}>
+            <img
+            src={`/img/P10.png`}
+            className={`${styles.fImg}`}
+          />
+            </div>
+        </section>
+    </div>
+
+        
+
+
+
         <a href="mailto: vverinpro@gmail.com">
           <div className={styles.splineContainer}>
             <p className={styles.collabCTA}>
@@ -359,8 +479,6 @@ export default function Home() {
     </div>
   );
 }
-
-
 
 
 

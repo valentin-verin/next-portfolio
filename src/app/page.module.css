@@ -237,3 +237,76 @@
 #soundBox8 {
   height: 20px;
 }
+
+
+
+
+
+
+
+
+
+
+.fImg {
+}
+
+.wrapper404 h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  font-size: 32vw;
+  font-weight: 400;
+  text-align: center;
+  margin: 0;
+  position: absolute;
+  top: 25%
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 200vh; /* ou plus pour créer un effet de défilement vertical */
+}
+
+
+.wrapper404 {
+  position: absolute;
+  top: 0;
+  width: 870vw; /* Cela crée une largeur très large pour faire défiler horizontalement */
+  height: 50vh;
+  will-change: transform;
+}
+
+.card {
+  position: absolute;
+  height: 300px;
+  width: 300px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#card1 {
+  top: 50%;
+  left: 20%;
+}
+
+#card2 {
+  top: 25%;
+  left: 40%;
+}
+
+#card3 {
+  top: 45%;
+  left: 60%;
+}
+
+#card4 {
+  top: 15%;
+  left: 80%;
+}
+
+
+@media (max-width: 900px) {
+  .wrapper404 {
+    padding-top: 20em;
+  }
+}
