@@ -287,19 +287,19 @@
 #card1 {
   top: 30%;
   left: 22%;
+}
 
-  img {
-    width: 160px;
-  }
+#card1 img {
+  width: 160px;
 }
 
 #card2 {
   top: 100%;
   left: 26%;
 
-  img {
-    width: 200px;
-  }
+}
+#card2 img {
+  width: 200px;
 }
 
 #card3 {
