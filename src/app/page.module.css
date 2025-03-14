@@ -264,7 +264,7 @@
 .container {
   position: relative;
   width: 100%;
-  height: 200vh; /* ou plus pour créer un effet de défilement vertical */
+  height: 300vh; /* ou plus pour créer un effet de défilement vertical */
 }
 
 
@@ -285,23 +285,47 @@
 }
 
 #card1 {
-  top: 50%;
-  left: 20%;
+  top: 30%;
+  left: 22%;
+
+  img {
+    width: 160px;
+  }
 }
 
 #card2 {
-  top: 25%;
-  left: 40%;
+  top: 100%;
+  left: 26%;
+
+  img {
+    width: 200px;
+  }
 }
 
 #card3 {
-  top: 45%;
-  left: 60%;
+  top: 30%;
+  left: 40%;
+  z-index: -99;
 }
 
 #card4 {
   top: 15%;
+  left: 54%;
+}
+
+#card5 {
+  top: 80%;
+  left: 69%;
+}
+
+#card6 {
+  top: 110%;
   left: 80%;
+}
+
+#card7 {
+  left: 86%;
+  z-index: -99;
 }
 
 

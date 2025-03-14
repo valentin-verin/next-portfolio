@@ -115,27 +115,31 @@ if (boxesContainerRef.current) {
   gsap.registerPlugin(ScrollTrigger);
 
   const cards = [
-      { id: `.${styles.card1}`, endTranslatex: -2000, rotate: 45 },
-      { id: `.${styles.card2}`, endTranslatex: -1000, rotate: -30 },
-      { id: `.${styles.card3}`, endTranslatex: -2000, rotate: 45 },
-      { id: `.${styles.card4}`, endTranslatex: -1500, rotate: -30 },
+    { id: `.${styles.card1}`, endTranslatex: -2000, rotate: 45 },
+    { id: `.${styles.card2}`, endTranslatex: -1000, rotate: -30 },
+    { id: `.${styles.card3}`, endTranslatex: -2000, rotate: 45 },
+    { id: `.${styles.card4}`, endTranslatex: -1500, rotate: -30 },
+    { id: `.${styles.card5}`, endTranslatex: -1500, rotate: -30 },
+    { id: `.${styles.card6}`, endTranslatex: -1500, rotate: 30 },
+    { id: `.${styles.card7}`, endTranslatex: -1500, rotate: -45 },
   ];
 
-  // Créer un ScrollTrigger pour animer la wrapper-404
   ScrollTrigger.create({
     trigger: `.${styles.wrapper404}`,
     start: "top top",
-    end: "+=900vh",  // Ajuste la fin de la section pour couvrir une plus grande portion
-    scrub: true, // Plus fluide
+    end: "+=2000vh", // Durée verticale suffisante
+    scrub: true,
     pin: true,
     onUpdate: (self) => {
+      const horizontalDistance = -3000 * (self.progress * 0.2); // Appliquer un facteur pour ralentir
       gsap.to(`.${styles.wrapper404}`, {
-        x: `${-770 * self.progress}vw`,  // Ralentir le défilement horizontal
+        x: `${horizontalDistance}vw`, // Distance ralentie
         duration: 0.5,
         ease: "power3.out",
       });
     },
   });
+  
 
   const cardElements = gsap.utils.toArray(`.${styles.card}`);
 
@@ -150,7 +154,7 @@ if (boxesContainerRef.current) {
         onUpdate: (self) => {
           gsap.to(card, {
             x: `${config.endTranslatex * self.progress * 0.5}px`,
-            rotate: `${config.rotate * self.progress * 2}`,
+            rotate: `${config.rotate * self.progress }`,
             duration: 0.5,
             ease: "power3.out",
           });
@@ -335,6 +339,11 @@ if (boxesContainerRef.current) {
             alt="Draggable"
             className={`draggable-box ${styles.box}`}
           />
+          <img
+            src={`/img/P13.png`}
+            alt="Draggable"
+            className={`draggable-box ${styles.box}`}
+          />
         </div>
         <div className={styles.datas}>
           <div className={`${styles.oneData} ${styles.selfRight}`}>
@@ -426,26 +435,44 @@ if (boxesContainerRef.current) {
             <h1>TOOLS THAN I USE MORE THAN MY LEGS</h1>
             <div className={styles.card} id={styles.card1}>
             <img
-            src={`/img/P10.png`}
+            src={`/img/tool1.png`}
             className={`${styles.fImg}`}
           />
             </div>
             <div className={styles.card} id={styles.card2}>
             <img
-            src={`/img/P10.png`}
+            src={`/img/tool2.png`}
             alt="Draggable"
             className={`${styles.fImg}`}
           />
             </div>
             <div className={styles.card} id={styles.card3}>
             <img
-            src={`/img/P10.png`}
+            src={`/img/tool3.png`}
             className={`${styles.fImg}`}
           />
             </div>
             <div className={styles.card} id={styles.card4}>
             <img
-            src={`/img/P10.png`}
+            src={`/img/tool4.png`}
+            className={`${styles.fImg}`}
+          />
+            </div>
+            <div className={styles.card} id={styles.card5}>
+            <img
+            src={`/img/tool5.png`}
+            className={`${styles.fImg}`}
+          />
+            </div>
+            <div className={styles.card} id={styles.card6}>
+            <img
+            src={`/img/tool6.png`}
+            className={`${styles.fImg}`}
+          />
+            </div>
+            <div className={styles.card} id={styles.card7}>
+            <img
+            src={`/img/tool7.png`}
             className={`${styles.fImg}`}
           />
             </div>
