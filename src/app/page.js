@@ -43,7 +43,12 @@ export default function Home() {
     });
 
 
-    // Initialisation des boîtes draggable
+
+
+
+
+
+//     //Initialisation des boîtes draggable
 if (boxesContainerRef.current) {
   const boxes = gsap.utils.toArray(".draggable-box");
   if (boxes.length > 0) {
@@ -111,6 +116,13 @@ if (boxesContainerRef.current) {
 }
 
 
+
+
+
+
+
+
+
     // S'assurer que ScrollTrigger est bien chargé
   gsap.registerPlugin(ScrollTrigger);
 
@@ -123,22 +135,29 @@ if (boxesContainerRef.current) {
     { id: `.${styles.card6}`, endTranslatex: -1500, rotate: 30 },
     { id: `.${styles.card7}`, endTranslatex: -1500, rotate: -45 },
   ];
-
   ScrollTrigger.create({
     trigger: `.${styles.wrapper404}`,
     start: "top top",
-    end: "+=2000vh", // Durée verticale suffisante
+    end: "+=4000vh", // Durée synchronisée avec le contenu
     scrub: true,
     pin: true,
     onUpdate: (self) => {
-      const horizontalDistance = -3000 * (self.progress * 0.2); // Appliquer un facteur pour ralentir
+      // Calculer dynamiquement la largeur totale du contenu
+      const contentWidth = document.querySelector(`.${styles.wrapper404}`).scrollWidth; 
+      const viewportWidth = window.innerWidth;
+      const maxDistance = contentWidth - viewportWidth;
+  
+      // Calculer la distance horizontale en fonction de la progression
+      const horizontalDistance = -maxDistance * self.progress;
+  
       gsap.to(`.${styles.wrapper404}`, {
-        x: `${horizontalDistance}vw`, // Distance ralentie
+        x: `${horizontalDistance}px`,
         duration: 0.5,
         ease: "power3.out",
       });
     },
   });
+  
   
 
   const cardElements = gsap.utils.toArray(`.${styles.card}`);
@@ -149,11 +168,11 @@ if (boxesContainerRef.current) {
       ScrollTrigger.create({
         trigger: card,
         start: "top top",
-        end: "+=1200vh",
+        end: "+=7200vh",
         scrub: 1,
         onUpdate: (self) => {
           gsap.to(card, {
-            x: `${config.endTranslatex * self.progress * 0.5}px`,
+            x: `${config.endTranslatex * self.progress * 0.9}px`,
             rotate: `${config.rotate * self.progress }`,
             duration: 0.5,
             ease: "power3.out",
@@ -347,7 +366,7 @@ if (boxesContainerRef.current) {
         </div>
         <div className={styles.datas}>
           <div className={`${styles.oneData} ${styles.selfRight}`}>
-            <h2>#01 Infos</h2>
+            <h2><span className={styles.sectionNb}>01  I</span>nfos</h2>
           </div>
           <div className={`${styles.oneData} ${styles.selfRight}`}>
             <p>Arras - France</p>
@@ -357,7 +376,7 @@ if (boxesContainerRef.current) {
             </a>
           </div>
           <div className={styles.oneData}>
-            <h2>#02 Education</h2>
+            <h2><span className={styles.sectionNb}>02 E</span>ducation</h2>
           </div>
           <div className={styles.oneData}>
             <h2>2024 - 2025 UQAC, QC</h2>
@@ -401,7 +420,7 @@ if (boxesContainerRef.current) {
           </div>
 
           <div className={`${styles.oneData} ${styles.selfRight}`}>
-            <h2>#03 Work Experience</h2>
+            <h2><span className={styles.sectionNb}>03 W</span>ork Experience</h2>
           </div>
 
           <div className={`${styles.oneData} ${styles.selfRight}`}>
