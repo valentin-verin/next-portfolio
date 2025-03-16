@@ -6,11 +6,15 @@ import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 import styles from "./page.module.css";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin"; // Import du plugin
+
 
 export default function Home() {
   const [heightsAdjusted, setHeightsAdjusted] = useState(false); // Suivi si les hauteurs ont été ajustées
   const buttonRef = useRef(null);
   const boxesContainerRef = useRef(null);
+  const topSectionRef = useRef(null);
+  const aboutSectionRef = useRef(null);
 
   useEffect(() => {
     // Initialisation des fonctionnalités
@@ -22,8 +26,10 @@ export default function Home() {
 
     //console.log(oneDataElements);
 
+
     // Vérifier que GSAP et Draggable sont disponibles
-    gsap.registerPlugin(Draggable, ScrollTrigger);
+    gsap.registerPlugin(Draggable, ScrollTrigger, ScrollToPlugin);
+
 
     // div reveal
     oneDataElements.forEach((element, index) => {
@@ -42,146 +48,133 @@ export default function Home() {
       });
     });
 
+    //     //Initialisation des boîtes draggable
+    if (boxesContainerRef.current) {
+      const boxes = gsap.utils.toArray(".draggable-box");
+      if (boxes.length > 0) {
+        console.log("Boîtes trouvées :", boxes);
 
+        const containerRect = boxesContainerRef.current.getBoundingClientRect();
 
+        // Boîtes qui seront rendues draggable (toutes sauf la cinquième)
+        const draggableBoxes = [];
 
+        boxes.forEach((box, index) => {
+          if (index === 4) {
+            // Positionner la cinquième boîte au centre
+            const centerX = (containerRect.width - box.offsetWidth) / 2;
+            const centerY = (containerRect.height - box.offsetHeight) / 2;
 
+            gsap.set(box, { x: centerX, y: centerY });
+          } else {
+            // Ajouter cette boîte à la liste des draggables
+            draggableBoxes.push(box);
+          }
+        });
 
+        // Animation pour repositionner les boîtes
+        const totalChanges = 20; // Nombre total de changements de position
+        const totalDuration = 500; // Durée totale en millisecondes (5 secondes)
+        let interval = totalDuration / totalChanges; // Temps initial entre chaque changement
 
-//     //Initialisation des boîtes draggable
-if (boxesContainerRef.current) {
-  const boxes = gsap.utils.toArray(".draggable-box");
-  if (boxes.length > 0) {
-    console.log("Boîtes trouvées :", boxes);
+        let changes = 0; // Compteur de changements
 
-    const containerRect = boxesContainerRef.current.getBoundingClientRect();
+        const repositionBoxes = () => {
+          draggableBoxes.forEach((box) => {
+            const randomX = gsap.utils.random(
+              0,
+              containerRect.width - box.offsetWidth
+            );
+            const randomY = gsap.utils.random(
+              0,
+              containerRect.height - box.offsetHeight
+            );
+            gsap.to(box, {
+              x: randomX,
+              y: randomY,
+              duration: 3,
+              ease: "expo.out",
+            }); // Très lent vers la fin
+          });
 
-    // Boîtes qui seront rendues draggable (toutes sauf la cinquième)
-    const draggableBoxes = [];
+          changes += 1;
+          if (changes < totalChanges) {
+            interval *= 1.2; // Augmenter le délai progressivement
+            setTimeout(repositionBoxes, interval);
+          }
+        };
 
-    boxes.forEach((box, index) => {
-      if (index === 4) {
-        // Positionner la cinquième boîte au centre
-        const centerX = (containerRect.width - box.offsetWidth) / 2;
-        const centerY = (containerRect.height - box.offsetHeight) / 2;
+        // Lancer la première animation
+        repositionBoxes();
 
-        gsap.set(box, { x: centerX, y: centerY });
-      } else {
-        // Ajouter cette boîte à la liste des draggables
-        draggableBoxes.push(box);
+        // Rendre les boîtes (sauf la cinquième) draggable après l'animation
+        Draggable.create(draggableBoxes, {
+          bounds: boxesContainerRef.current, // Limiter le déplacement au conteneur
+          zIndex: true, // Améliorer le z-index au clic
+          cursor: false
+        });
+        Draggable.zIndex = 99;
       }
-    });
-
-    // Animation pour repositionner les boîtes
-    const totalChanges = 20; // Nombre total de changements de position
-    const totalDuration = 500; // Durée totale en millisecondes (5 secondes)
-    let interval = totalDuration / totalChanges; // Temps initial entre chaque changement
-
-    let changes = 0; // Compteur de changements
-
-    const repositionBoxes = () => {
-      draggableBoxes.forEach((box) => {
-        const randomX = gsap.utils.random(
-          0,
-          containerRect.width - box.offsetWidth
-        );
-        const randomY = gsap.utils.random(
-          0,
-          containerRect.height - box.offsetHeight
-        );
-        gsap.to(box, {
-          x: randomX,
-          y: randomY,
-          duration: 3,
-          ease: "expo.out",
-        }); // Très lent vers la fin
-      });
-
-      changes += 1;
-      if (changes < totalChanges) {
-        interval *= 1.2; // Augmenter le délai progressivement
-        setTimeout(repositionBoxes, interval);
-      }
-    };
-
-    // Lancer la première animation
-    repositionBoxes();
-
-    // Rendre les boîtes (sauf la cinquième) draggable après l'animation
-    Draggable.create(draggableBoxes, {
-      bounds: boxesContainerRef.current, // Limiter le déplacement au conteneur
-      zIndexBoost: true, // Améliorer le z-index au clic
-    });
-  }
-}
-
-
-
-
-
-
-
-
+    }
 
     // S'assurer que ScrollTrigger est bien chargé
-  gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger);
 
-  const cards = [
-    { id: `.${styles.card1}`, endTranslatex: -2000, rotate: 45 },
-    { id: `.${styles.card2}`, endTranslatex: -1000, rotate: -30 },
-    { id: `.${styles.card3}`, endTranslatex: -2000, rotate: 45 },
-    { id: `.${styles.card4}`, endTranslatex: -1500, rotate: -30 },
-    { id: `.${styles.card5}`, endTranslatex: -1500, rotate: -30 },
-    { id: `.${styles.card6}`, endTranslatex: -1500, rotate: 30 },
-    { id: `.${styles.card7}`, endTranslatex: -1500, rotate: -45 },
-  ];
-  ScrollTrigger.create({
-    trigger: `.${styles.wrapper404}`,
-    start: "top top",
-    end: "+=4000vh", // Durée synchronisée avec le contenu
-    scrub: true,
-    pin: true,
-    onUpdate: (self) => {
-      // Calculer dynamiquement la largeur totale du contenu
-      const contentWidth = document.querySelector(`.${styles.wrapper404}`).scrollWidth; 
-      const viewportWidth = window.innerWidth;
-      const maxDistance = contentWidth - viewportWidth;
-  
-      // Calculer la distance horizontale en fonction de la progression
-      const horizontalDistance = -maxDistance * self.progress;
-  
-      gsap.to(`.${styles.wrapper404}`, {
-        x: `${horizontalDistance}px`,
-        duration: 0.5,
-        ease: "power3.out",
-      });
-    },
-  });
-  
-  
+    const cards = [
+      { id: `.${styles.card1}`, endTranslatex: -2000, rotate: 45 },
+      { id: `.${styles.card2}`, endTranslatex: -1000, rotate: -30 },
+      { id: `.${styles.card3}`, endTranslatex: -2000, rotate: 45 },
+      { id: `.${styles.card4}`, endTranslatex: -1500, rotate: -30 },
+      { id: `.${styles.card5}`, endTranslatex: -1500, rotate: -30 },
+      { id: `.${styles.card6}`, endTranslatex: -1500, rotate: 30 },
+      { id: `.${styles.card7}`, endTranslatex: -1500, rotate: -45 },
+    ];
+    ScrollTrigger.create({
+      trigger: `.${styles.wrapper404}`,
+      start: "top top",
+      end: "+=4000vh", // Durée synchronisée avec le contenu
+      scrub: true,
+      pin: true,
+      onUpdate: (self) => {
+        // Calculer dynamiquement la largeur totale du contenu
+        const contentWidth = document.querySelector(
+          `.${styles.wrapper404}`
+        ).scrollWidth;
+        const viewportWidth = window.innerWidth;
+        const maxDistance = contentWidth - viewportWidth;
 
-  const cardElements = gsap.utils.toArray(`.${styles.card}`);
+        // Calculer la distance horizontale en fonction de la progression
+        const horizontalDistance = -maxDistance * self.progress;
 
-  cardElements.forEach((card, index) => {
-    const config = cards[index];
-    if (config) {
-      ScrollTrigger.create({
-        trigger: card,
-        start: "top top",
-        end: "+=7200vh",
-        scrub: 1,
-        onUpdate: (self) => {
-          gsap.to(card, {
-            x: `${config.endTranslatex * self.progress * 0.9}px`,
-            rotate: `${config.rotate * self.progress }`,
-            duration: 0.5,
-            ease: "power3.out",
-          });
-        },
-      });
-    }
-  });
+        gsap.to(`.${styles.wrapper404}`, {
+          x: `${horizontalDistance}px`,
+          duration: 0.5,
+          ease: "power3.out",
+        });
+      },
+    });
 
+    const cardElements = gsap.utils.toArray(`.${styles.card}`);
+
+    cardElements.forEach((card, index) => {
+      const config = cards[index];
+      if (config) {
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top top",
+          end: "+=7200vh",
+          scrub: 1,
+          onUpdate: (self) => {
+            gsap.to(card, {
+              x: `${config.endTranslatex * self.progress * 0.9}px`,
+              rotate: `${config.rotate * self.progress}`,
+              duration: 0.5,
+              ease: "power3.out",
+            });
+          },
+        });
+      }
+    });
 
     // Nettoyage des effets au démontage
     return () => {
@@ -198,13 +191,6 @@ if (boxesContainerRef.current) {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
-
-
-
-
-
-
-
 
   // Fonction qui modifie les hauteurs et ajoute un margin-right avec délai pour la soundBox
   function adjustHeights() {
@@ -257,20 +243,17 @@ if (boxesContainerRef.current) {
 
       setHeightsAdjusted(true); // Les hauteurs ont été ajustées
     }
+    
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
+  // Fonction pour scroll vers une section
+  const scrollToSection = (ref) => {
+    gsap.to(window, {
+      duration: 1, // Durée de l'animation du scroll
+      scrollTo: ref.current, // Cible l'élément référencé
+      ease: "power2.out", // Courbe d'animation
+    });
+  };
 
   return (
     <div className={styles.page}>
@@ -291,7 +274,8 @@ if (boxesContainerRef.current) {
           <div className={styles.soundBox} id={styles.soundBox8}></div>
         </div>
       </div>
-      <div className={styles.pageContainer}>
+
+      <div ref={topSectionRef} className={styles.pageContainer}>
         <audio id="a1" autoPlay loop>
           <source src="./../sound/ambience.mp3" type="audio/mpeg" />
           Your browser does not support the audio element.
@@ -364,9 +348,11 @@ if (boxesContainerRef.current) {
             className={`draggable-box ${styles.box}`}
           />
         </div>
-        <div className={styles.datas}>
+        <div ref={aboutSectionRef} className={styles.datas}>
           <div className={`${styles.oneData} ${styles.selfRight}`}>
-            <h2><span className={styles.sectionNb}>01  I</span>nfos</h2>
+            <h2>
+              <span className={styles.sectionNb}>01 I</span>nfos
+            </h2>
           </div>
           <div className={`${styles.oneData} ${styles.selfRight}`}>
             <p>Arras - France</p>
@@ -376,7 +362,9 @@ if (boxesContainerRef.current) {
             </a>
           </div>
           <div className={styles.oneData}>
-            <h2><span className={styles.sectionNb}>02 E</span>ducation</h2>
+            <h2>
+              <span className={styles.sectionNb}>02 E</span>ducation
+            </h2>
           </div>
           <div className={styles.oneData}>
             <h2>2024 - 2025 UQAC, QC</h2>
@@ -420,7 +408,9 @@ if (boxesContainerRef.current) {
           </div>
 
           <div className={`${styles.oneData} ${styles.selfRight}`}>
-            <h2><span className={styles.sectionNb}>03 W</span>ork Experience</h2>
+            <h2>
+              <span className={styles.sectionNb}>03 W</span>ork Experience
+            </h2>
           </div>
 
           <div className={`${styles.oneData} ${styles.selfRight}`}>
@@ -445,62 +435,36 @@ if (boxesContainerRef.current) {
           </div>
         </div>
 
-
-
-
-
         <div className={styles.container}>
-        <section className={styles.wrapper404}>
+          <section className={styles.wrapper404}>
             <h1>TOOLS THAN I USE MORE THAN MY LEGS</h1>
             <div className={styles.card} id={styles.card1}>
-            <img
-            src={`/img/tool1.png`}
-            className={`${styles.fImg}`}
-          />
+              <img src={`/img/tool1.png`} className={`${styles.fImg}`} />
             </div>
             <div className={styles.card} id={styles.card2}>
-            <img
-            src={`/img/tool2.png`}
-            alt="Draggable"
-            className={`${styles.fImg}`}
-          />
+              <img
+                src={`/img/tool2.png`}
+                alt="Draggable"
+                className={`${styles.fImg}`}
+              />
             </div>
             <div className={styles.card} id={styles.card3}>
-            <img
-            src={`/img/tool3.png`}
-            className={`${styles.fImg}`}
-          />
+              <img src={`/img/tool3.png`} className={`${styles.fImg}`} />
             </div>
             <div className={styles.card} id={styles.card4}>
-            <img
-            src={`/img/tool4.png`}
-            className={`${styles.fImg}`}
-          />
+              <img src={`/img/tool4.png`} className={`${styles.fImg}`} />
             </div>
             <div className={styles.card} id={styles.card5}>
-            <img
-            src={`/img/tool5.png`}
-            className={`${styles.fImg}`}
-          />
+              <img src={`/img/tool5.png`} className={`${styles.fImg}`} />
             </div>
             <div className={styles.card} id={styles.card6}>
-            <img
-            src={`/img/tool6.png`}
-            className={`${styles.fImg}`}
-          />
+              <img src={`/img/tool6.png`} className={`${styles.fImg}`} />
             </div>
             <div className={styles.card} id={styles.card7}>
-            <img
-            src={`/img/tool7.png`}
-            className={`${styles.fImg}`}
-          />
+              <img src={`/img/tool7.png`} className={`${styles.fImg}`} />
             </div>
-        </section>
-    </div>
-
-        
-
-
+          </section>
+        </div>
 
         <a href="mailto: vverinpro@gmail.com">
           <div className={styles.splineContainer}>
@@ -521,18 +485,26 @@ if (boxesContainerRef.current) {
           </div>
         </a>
       </div>
-      <Footer />
+      <div className={styles.footer}>
+        <div className={styles.footerLeft}>
+          <p className={styles.contactTitle}>Contact</p>
+          <a href="mailto:vverinpro@gmail.com">vverinpro@gmail.com</a>
+        </div>
+        <div className={styles.footerMiddle}>
+          <p>2024 - © VALENTIN VERIN</p>
+        </div>
+        <div className={styles.footerRight}>
+          <div className={styles.footerRightContainer}>
+            <p onClick={() => scrollToSection(topSectionRef)}>Top</p>
+            <p onClick={() => scrollToSection(aboutSectionRef)}>About</p>
+            <p>Project</p>
+            <p>Contact</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
-
-
-
-
-
-
-
-
 
 // suivi de la souris
 function initializeMouseTrail() {
@@ -623,7 +595,7 @@ function initializeHandScroll() {
     const vvElement = document.getElementById("vv");
     if (vvElement) {
       const scrollY = window.scrollY;
-      const scale = Math.max(0.4, 1 - scrollY / 500); // Minimum 15% de l'échelle
+      const scale = Math.max(0.2, 1 - scrollY / 500); // Minimum 15% de l'échelle
 
       // Modifier l'origine de transformation pour aligner en haut
       vvElement.style.transformOrigin = "top center";

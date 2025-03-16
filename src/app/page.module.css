@@ -3,16 +3,7 @@
   font-weight: normal;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  .page {
-    --gray-rgb: 255, 255, 255;
-    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
 
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-  }
-} */
 
 
 /* Enable hover only on non-touch devices */
@@ -38,17 +29,6 @@
   
 }
 
-/* @media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
-} */
-
-/* body {
-  overflow: scroll;
-} */
-
-
 .pageContainer {
   padding-top: 200px;
   max-width: 1680px;
@@ -61,6 +41,7 @@
   padding: 0 20px;
   transition: transform 0.1s ease; /* Animation fluide */
   transform-origin: center;
+  z-index: 999;
 }
 
 .dot {
@@ -94,6 +75,9 @@
   height: fit-content;
   max-width: 100vw;
   position: fixed;
+  z-index: 999;
+  mask: linear-gradient(black, black, transparent);
+  backdrop-filter: blur(2px);
 }
 
 .datas {
@@ -178,7 +162,7 @@
 
 .box {
   position: absolute; /* Important pour Draggable */
-  cursor: grab;
+  /* cursor: grab; */
 }
 
 
@@ -188,9 +172,14 @@
   object-fit: contain;
 }
 
-.box:active {
-  cursor: grabbing;
+
+.box {
+  cursor: url("/img/readyToGrab.png"), auto;
 }
+.box:active {
+  cursor: url("/img/grabbing.png"), auto;
+}
+
 
 
 
@@ -209,7 +198,7 @@
   width: 2px;
   background-color: rgb(77, 77, 77);
   transition: height 1s ease-in-out; /* Transition fluide pour les hauteurs */
-
+  z-index: 999;
 }
 
 #soundBox1 {
@@ -343,4 +332,82 @@
   font-weight: 400;
   font-style: normal;
   font-size: 40px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/******   FOOTER   ********************************************/
+
+
+
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  font-size: 14px;
+  width: 100%; /* Change 100vw en 100% */
+  padding: 40px 80px;
+  box-sizing: border-box; /* Inclut le padding dans la largeur */
+  /* font-family: Helvetica, sans-serif; */
+
+  background: linear-gradient(rgba(255, 255, 255, 0), rgb(241, 241, 241));
+  z-index: 1000;
+  color: black;
+  font-family: var(--font-primary);
+}
+
+.footer a {
+  text-decoration: none;
+  color: black;
+}
+
+.footerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 220px;
+}
+
+.FLIcons {
+  display: flex;
+  gap: 24px;
+}
+
+.footer i {
+  font-size: 24px;
+}
+
+.footerMiddle {
+}
+
+.footerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  width: 220px;
+}
+
+.footerRightContainer {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.contactTitle::first-letter {
+  font-family: var(--font-third);
+  font-size: 40px;
+  font-weight: 100;
+  letter-spacing: 2px;
 }
