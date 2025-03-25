@@ -8,7 +8,6 @@ import styles from "./page.module.css";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin"; // Import du plugin
 
-
 export default function Home() {
   const [heightsAdjusted, setHeightsAdjusted] = useState(false); // Suivi si les hauteurs ont été ajustées
   const buttonRef = useRef(null);
@@ -26,10 +25,8 @@ export default function Home() {
 
     //console.log(oneDataElements);
 
-
     // Vérifier que GSAP et Draggable sont disponibles
     gsap.registerPlugin(Draggable, ScrollTrigger, ScrollToPlugin);
-
 
     // div reveal
     oneDataElements.forEach((element, index) => {
@@ -68,12 +65,16 @@ export default function Home() {
             gsap.set(box, { x: centerX, y: centerY });
           } else {
             // Ajouter cette boîte à la liste des draggables
+            const centerX = (containerRect.width - box.offsetWidth) / 2;
+            const centerY = (containerRect.height - box.offsetHeight) / 2;
+
+            gsap.set(box, { x: centerX, y: centerY });
             draggableBoxes.push(box);
           }
         });
 
         // Animation pour repositionner les boîtes
-        const totalChanges = 20; // Nombre total de changements de position
+        const totalChanges = 15; // Nombre total de changements de position
         const totalDuration = 500; // Durée totale en millisecondes (5 secondes)
         let interval = totalDuration / totalChanges; // Temps initial entre chaque changement
 
@@ -92,7 +93,7 @@ export default function Home() {
             gsap.to(box, {
               x: randomX,
               y: randomY,
-              duration: 3,
+              duration: 20,
               ease: "expo.out",
             }); // Très lent vers la fin
           });
@@ -111,7 +112,7 @@ export default function Home() {
         Draggable.create(draggableBoxes, {
           bounds: boxesContainerRef.current, // Limiter le déplacement au conteneur
           zIndex: true, // Améliorer le z-index au clic
-          cursor: false
+          cursor: false,
         });
         Draggable.zIndex = 99;
       }
@@ -243,7 +244,6 @@ export default function Home() {
 
       setHeightsAdjusted(true); // Les hauteurs ont été ajustées
     }
-    
   }
 
   // Fonction pour scroll vers une section
@@ -277,7 +277,7 @@ export default function Home() {
 
       <div ref={topSectionRef} className={styles.pageContainer}>
         <audio id="a1" autoPlay loop>
-          <source src="./../sound/ambience.mp3" type="audio/mpeg" />
+          <source src="./../sound/ambiance.mp3" type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
         <div ref={boxesContainerRef} className={styles.draggableContainer}>
@@ -437,7 +437,9 @@ export default function Home() {
 
         <div className={styles.container}>
           <section className={styles.wrapper404}>
-            <h1>TOOLS THAN I USE MORE THAN MY LEGS</h1>
+            <h1 className={styles.explora}>
+              TOOLS THAN I USE MORE THAN MY LEGS
+            </h1>
             <div className={styles.card} id={styles.card1}>
               <img src={`/img/tool1.png`} className={`${styles.fImg}`} />
             </div>
@@ -469,7 +471,7 @@ export default function Home() {
         <a href="mailto: vverinpro@gmail.com">
           <div className={styles.splineContainer}>
             <p className={styles.collabCTA}>
-              OFFREZ UNE EXPÉRIENCE DIGITALE À LA HAUTEUR DE VOS IDÉES
+            <span className={styles.sectionNb}>O</span>FFER A DIGITAL EXPERIENCE THAT LIVES UP TO YOUR IDEAS
             </p>
             <script
               type="module"
@@ -487,7 +489,9 @@ export default function Home() {
       </div>
       <div className={styles.footer}>
         <div className={styles.footerLeft}>
-          <p className={styles.contactTitle}>Contact</p>
+          <a href="mailto: vverinpro@gmail.com">
+            <p className={styles.contactTitle}>Contact</p>
+          </a>
           <a href="mailto:vverinpro@gmail.com">vverinpro@gmail.com</a>
         </div>
         <div className={styles.footerMiddle}>
@@ -498,7 +502,9 @@ export default function Home() {
             <p onClick={() => scrollToSection(topSectionRef)}>Top</p>
             <p onClick={() => scrollToSection(aboutSectionRef)}>About</p>
             <p>Project</p>
-            <p>Contact</p>
+            <a href="/nowhere">
+            <p>Nowhere</p>
+            </a>
           </div>
         </div>
       </div>
@@ -674,7 +680,7 @@ function initializeMouseButton(buttonRef) {
       { duration: 1000, fill: "forwards" } // Délai de 500ms
     );
 
-    button.style.opacity = 1; // Rendre visible
+    button.style.opacity = 0.7; // Rendre visible
   };
 
   const handleMouseLeave = () => {
