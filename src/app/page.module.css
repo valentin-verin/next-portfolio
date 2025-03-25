@@ -182,6 +182,11 @@
   .datas {
     padding: 40px;
   }
+
+  .vv {
+    min-width: 300px;
+    width: 80%;
+  }
 }
 
 .selfRight {

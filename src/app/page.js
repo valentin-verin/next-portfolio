@@ -601,7 +601,8 @@ function initializeHandScroll() {
     const vvElement = document.getElementById("vv");
     if (vvElement) {
       const scrollY = window.scrollY;
-      const scale = Math.max(0.2, 1 - scrollY / 500); // Minimum 15% de l'échelle
+      const minScale = window.innerWidth < 900 ? 0.7 : 0.2;
+      const scale = Math.max(minScale, 1 - scrollY / 500); // Minimum 15% de l'échelle
 
       // Modifier l'origine de transformation pour aligner en haut
       vvElement.style.transformOrigin = "top center";
