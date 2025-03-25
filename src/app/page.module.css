@@ -165,11 +165,12 @@
   .footerRightContainer {
     align-items: center;
 
-    p{
-      margin: auto;  
-    }
   }
-
+  
+  .footerP{
+    margin: auto;  
+  }
+  
   .footerMiddle {
     margin: auto;
   }

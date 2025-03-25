@@ -499,11 +499,11 @@ export default function Home() {
         </div>
         <div className={styles.footerRight}>
           <div className={styles.footerRightContainer}>
-            <p onClick={() => scrollToSection(topSectionRef)}>Top</p>
-            <p onClick={() => scrollToSection(aboutSectionRef)}>About</p>
-            <p>Project</p>
+            <p className={styles.footerP} onClick={() => scrollToSection(topSectionRef)}>Top</p>
+            <p className={styles.footerP} onClick={() => scrollToSection(aboutSectionRef)}>About</p>
+            <p className={styles.footerP}>Project</p>
             <a href="/nowhere">
-            <p>Nowhere</p>
+            <p className={styles.footerP}>Nowhere</p>
             </a>
           </div>
         </div>
