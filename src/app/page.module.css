@@ -45,6 +45,7 @@
   opacity: 0; /* Commence invisible */
   animation: fadeIn 7s ease forwards; /* Animation d'apparition */
   filter: drop-shadow(0px 0px 24px #ffffff);
+  min-width: 400px;
 }
 
 @keyframes fadeIn {
@@ -132,6 +133,54 @@
   width: 100%;
   text-align: center;
   font-size: 26px;
+}
+
+@media (max-width: 900px) {
+  .collabCTA {
+    font-size: 10px;    
+  }
+
+  .splineContainer {
+    height: 520px;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .footerLeft {
+    align-items: center;
+    margin: auto;
+  }
+
+  .footerRight {
+    align-items: center;
+    margin: auto;
+    max-width: fit-content;
+    text-align: center;
+  }
+
+  .footerRightContainer {
+    align-items: center;
+
+    p{
+      margin: auto;  
+    }
+  }
+
+  .footerMiddle {
+    margin: auto;
+  }
+
+  .viewer {
+    clip-path: polygon(100% 0, 100% 80%, 8% 80%, 8% 100%, 0 100%, 0 0);
+  }
+
+  .datas {
+    padding: 40px;
+  }
 }
 
 .selfRight {
