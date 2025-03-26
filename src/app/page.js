@@ -25,6 +25,33 @@ export default function Home() {
 
     //console.log(oneDataElements);
 
+    let elements = document.querySelectorAll(".text");
+
+
+    elements.forEach((element) => {
+      let innerText = element.innerText;
+      element.innerHTML = "";
+    
+      let textContainer = document.createElement("div");
+      textContainer.classList.add(styles.block); // Utilisation de la classe CSS Module pour "block"
+    
+      for (let letter of innerText) {
+        let span = document.createElement("span");
+        span.innerText = letter.trim() === "" ? "\xa0" : letter;
+        span.classList.add(styles.letter); // Utilisation de la classe CSS Module pour "letter"
+        textContainer.appendChild(span);
+      }
+    
+      element.appendChild(textContainer);
+      element.appendChild(textContainer.cloneNode(true));
+    });
+    
+    elements.forEach((element) => {
+      element.addEventListener("mouseover", () => {
+        element.classList.remove(styles.play); // Utilisation de la classe CSS Module pour "play" (si définie)
+      });
+    });
+
     // Vérifier que GSAP et Draggable sont disponibles
     gsap.registerPlugin(Draggable, ScrollTrigger, ScrollToPlugin);
 
@@ -191,6 +218,7 @@ export default function Home() {
       }
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
+    
   }, []);
 
   // Fonction qui modifie les hauteurs et ajoute un margin-right avec délai pour la soundBox
@@ -499,11 +527,11 @@ export default function Home() {
         </div>
         <div className={styles.footerRight}>
           <div className={styles.footerRightContainer}>
-            <p className={styles.footerP} onClick={() => scrollToSection(topSectionRef)}>Top</p>
-            <p className={styles.footerP} onClick={() => scrollToSection(aboutSectionRef)}>About</p>
-            <p className={styles.footerP}>Project</p>
+            <p className={`${styles.fImg}, ${styles.text} text`} onClick={() => scrollToSection(topSectionRef)}>Top</p>
+            <p className={`${styles.fImg}, ${styles.text} text`} onClick={() => scrollToSection(aboutSectionRef)}>About</p>
+            <p className={`${styles.fImg}, ${styles.text} text`}>Project</p>
             <a href="/nowhere">
-            <p className={styles.footerP}>Nowhere</p>
+            <p className={`${styles.fImg}, ${styles.text} text`}>Nowhere</p>
             </a>
           </div>
         </div>
