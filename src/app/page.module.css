@@ -167,7 +167,6 @@
 
   .footerRightContainer {
     align-items: center;
-
   }
 
   .footerP {
@@ -596,6 +595,13 @@
   opacity: 1;
   /* l'élément survolé reste complètement visible */
   cursor: pointer;
+}
+
+
+@media (max-width: 900px) {
+  .footerRightContainer {
+    align-items: center;
+  }
 }
 
 
