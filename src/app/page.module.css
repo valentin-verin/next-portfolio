@@ -24,26 +24,24 @@
   }
 }
 
-@media (max-width: 600px) {
-  
-  
-}
+@media (max-width: 600px) {}
 
 .pageContainer {
   padding-top: 200px;
-  max-width: 1680px;
-  margin: auto;
 }
 
 .vv {
   margin: auto;
   width: 96%;
   padding: 0 20px;
-  transition: transform 0.1s ease; /* Animation fluide */
+  transition: transform 0.1s ease;
+  /* Animation fluide */
   transform-origin: center;
   z-index: 999;
-  opacity: 0; /* Commence invisible */
-  animation: fadeIn 7s ease forwards; /* Animation d'apparition */
+  opacity: 0;
+  /* Commence invisible */
+  animation: fadeIn 7s ease forwards;
+  /* Animation d'apparition */
   filter: drop-shadow(0px 0px 24px #ffffff);
   min-width: 400px;
 }
@@ -52,6 +50,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -61,7 +60,8 @@
   position: absolute;
   font-size: 20px;
   font-family: var(--font-primary);
-  color: #000000; /* Couleur du chiffre */
+  color: #000000;
+  /* Couleur du chiffre */
   pointer-events: none;
   user-select: none;
   opacity: 0.1;
@@ -99,6 +99,8 @@
   display: flex;
   flex-direction: column;
   gap: 80px;
+  max-width: 1680px;
+    margin: auto;
 }
 
 .oneData {
@@ -113,14 +115,15 @@
   max-width: 25%;
 }
 
-.selfRight p{
+.selfRight p {
   text-align: end;
 }
 
 
 .splineContainer {
   position: relative;
-  cursor: pointer; /* Définir un pointeur par défaut */
+  cursor: pointer;
+  /* Définir un pointeur par défaut */
 }
 
 .viewer {
@@ -137,7 +140,7 @@
 
 @media (max-width: 900px) {
   .collabCTA {
-    font-size: 10px;    
+    font-size: 10px;
   }
 
   .splineContainer {
@@ -166,11 +169,11 @@
     align-items: center;
 
   }
-  
-  .footerP{
-    margin: auto;  
+
+  .footerP {
+    margin: auto;
   }
-  
+
   .footerMiddle {
     margin: auto;
   }
@@ -206,8 +209,10 @@
   color: rgb(77, 77, 77);
   font-size: 12px;
   text-shadow: 2px 2px 20px #FFFFFF;
-  pointer-events: none; /* Éviter que le bouton bloque la souris */
-  opacity: 1; /* Caché par défaut */
+  pointer-events: none;
+  /* Éviter que le bouton bloque la souris */
+  opacity: 1;
+  /* Caché par défaut */
   transition: opacity 0.7s ease;
   z-index: 1000;
 }
@@ -233,7 +238,8 @@
 }
 
 .box {
-  position: absolute; /* Important pour Draggable */
+  position: absolute;
+  /* Important pour Draggable */
   /* top: 50%;
   left: 50%; */
   /* cursor: grab; */
@@ -250,6 +256,7 @@
 .box {
   cursor: url("/img/readyToGrab.png"), auto;
 }
+
 .box:active {
   cursor: url("/img/grabbing.png"), auto;
 }
@@ -268,35 +275,43 @@
 }
 
 .soundBox {
-  height :24px;
+  height: 24px;
   width: 2px;
   background-color: rgb(77, 77, 77);
-  transition: height 1s ease-in-out; /* Transition fluide pour les hauteurs */
+  transition: height 1s ease-in-out;
+  /* Transition fluide pour les hauteurs */
   z-index: 999;
 }
 
 #soundBox1 {
   height: 8px;
 }
+
 #soundBox2 {
   height: 8px;
-    margin-right: 2px
+  margin-right: 2px
 }
+
 #soundBox3 {
   height: 8px;
 }
+
 #soundBox4 {
   height: 10px;
 }
+
 #soundBox5 {
   height: 12px;
 }
+
 #soundBox6 {
   height: 14px;
 }
+
 #soundBox7 {
   height: 18px;
 }
+
 #soundBox8 {
   height: 20px;
 }
@@ -310,8 +325,6 @@
 
 
 
-.fImg {
-}
 
 .wrapper404 h1 {
   font-family: "Explora", serif;
@@ -326,14 +339,16 @@
 .container {
   position: relative;
   width: 100%;
-  height: 600vh; /* ou plus pour créer un effet de défilement vertical */
+  height: 600vh;
+  /* ou plus pour créer un effet de défilement vertical */
 }
 
 
 .wrapper404 {
   position: absolute;
   top: 0;
-  width: 870vw; /* Cela crée une largeur très large pour faire défiler horizontalement */
+  width: 870vw;
+  /* Cela crée une largeur très large pour faire défiler horizontalement */
   height: 50vh;
   will-change: transform;
 }
@@ -360,6 +375,7 @@
   left: 26%;
 
 }
+
 #card2 img {
   width: 200px;
 }
@@ -434,9 +450,11 @@
   justify-content: space-between;
   align-items: end;
   font-size: 14px;
-  width: 100%; /* Change 100vw en 100% */
+  width: 100%;
+  /* Change 100vw en 100% */
   padding: 40px 80px;
-  box-sizing: border-box; /* Inclut le padding dans la largeur */
+  box-sizing: border-box;
+  /* Inclut le padding dans la largeur */
   /* font-family: Helvetica, sans-serif; */
 
   background: linear-gradient(rgba(255, 255, 255, 0), rgb(241, 241, 241));
@@ -449,6 +467,7 @@
   text-decoration: none;
   color: black;
 }
+
 .footer a:hover {
   text-decoration: none;
 }
@@ -469,8 +488,6 @@
   font-size: 24px;
 }
 
-.footerMiddle {
-}
 
 .footerRight {
   display: flex;
@@ -566,17 +583,155 @@
 }
 
 .footerRightContainer p {
-  transition: opacity 0.2s ease; /* transition pour un effet fluide */
+  transition: opacity 0.2s ease;
+  /* transition pour un effet fluide */
 }
 
 .footerRightContainer:hover p {
-  opacity: 0.5; /* réduction de l'opacité par défaut au survol du conteneur */
+  opacity: 0.5;
+  /* réduction de l'opacité par défaut au survol du conteneur */
 }
 
-.footerRightContainer p:hover{
-  opacity: 1; /* l'élément survolé reste complètement visible */
+.footerRightContainer p:hover {
+  opacity: 1;
+  /* l'élément survolé reste complètement visible */
   cursor: pointer;
 }
 
 
 /******   END FOOTER   ********************************************/
+
+
+
+
+/******   PROJECT   ********************************************/
+
+
+.projectsContainer {
+  width: 100%;
+  height: 2000vh;
+  position: relative;
+}
+
+.activeSlide {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: inherit;
+  max-width: inherit;
+  height: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  opacity: 0;
+  z-index: -10;
+}
+
+.activeSlide img {
+  position: absolute;
+  filter: blur(50px);
+  transform: scale(1.125);
+}
+
+.slider {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  transform-style: preserve-3d;
+  perspective: 750px;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  overflow: hidden;
+}
+
+.slide img {
+  width: 60%;
+  height: 100%;
+  margin-left: 100px ;
+  margin-right: 100px;
+  box-shadow: 0px 0px 40px -6px rgba(0,0,0,0.05);
+}
+
+.slideCopy p {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 10px;
+  line-height: 150%;
+}
+
+.slideCopy p#index {
+  font-size: 8px;
+  font-weight: 100;
+  margin-bottom: 0.75em;
+}
+
+#slide1 {
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translateX(-50%) translateY(-20%) translateZ(-17500px);
+  opacity: 0;
+}
+
+#slide2 {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translateX(-50%) translateY(-20%) translateZ(-15000px);
+  opacity: 0;
+}
+
+#slide3 {
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translateX(-50%) translateY(-20%) translateZ(-12500px);
+  opacity: 0;
+}
+
+#slide4 {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translateX(-50%) translateY(-20%) translateZ(-10000px);
+  opacity: 0;
+}
+
+#slide5 {
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translateX(-50%) translateY(-20%) translateZ(-7500px);
+  opacity: 0;
+}
+
+#slide6 {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translateX(-50%) translateY(-20%) translateZ(-5000px);
+  opacity: 0;
+}
+
+#slide7 {
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translateX(-50%) translateY(-20%) translateZ(-2500px);
+  opacity: 0.5;
+}
+
+#slide8 {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translateX(-50%) translateY(-20%) translateZ(0);
+  opacity: 1;
+}
+
+/******   END PROJECTS   ********************************************/

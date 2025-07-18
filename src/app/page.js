@@ -16,6 +16,7 @@ export default function Home() {
   const aboutSectionRef = useRef(null);
 
   useEffect(() => {
+    
     // Initialisation des fonctionnalités
     const cleanupMouseTrail = initializeMouseTrail();
     const cleanupHandScroll = initializeHandScroll();
@@ -27,25 +28,24 @@ export default function Home() {
 
     let elements = document.querySelectorAll(".text");
 
-
     elements.forEach((element) => {
       let innerText = element.innerText;
       element.innerHTML = "";
-    
+
       let textContainer = document.createElement("div");
       textContainer.classList.add(styles.block); // Utilisation de la classe CSS Module pour "block"
-    
+
       for (let letter of innerText) {
         let span = document.createElement("span");
         span.innerText = letter.trim() === "" ? "\xa0" : letter;
         span.classList.add(styles.letter); // Utilisation de la classe CSS Module pour "letter"
         textContainer.appendChild(span);
       }
-    
+
       element.appendChild(textContainer);
       element.appendChild(textContainer.cloneNode(true));
     });
-    
+
     elements.forEach((element) => {
       element.addEventListener("mouseover", () => {
         element.classList.remove(styles.play); // Utilisation de la classe CSS Module pour "play" (si définie)
@@ -204,6 +204,100 @@ export default function Home() {
       }
     });
 
+
+
+
+
+
+
+
+    const slides = gsap.utils.toArray(`.${styles.slide}`);
+    const activeSlideImages = gsap.utils.toArray(`.${styles.activeSlide} img`);
+    
+    // Son à jouer au changement de slide
+    const audio = new Audio('./../sound/wind-2.mp3'); // Assure-toi que ce chemin est correct
+    let lastActiveIndex = -1;
+    
+    function getInitialTranslateZ(slide) {
+      const style = window.getComputedStyle(slide);
+      const matrix = style.transform.match(/matrix3d\((.+)\)/);
+      if (matrix) {
+        const values = matrix[1].split(", ");
+        return parseFloat(values[14] || 0);
+      }
+      return 0;
+    }
+    
+    function mapRange(value, inMin, inMax, outMin, outMax) {
+      return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+    }
+    
+    slides.forEach((slide, index) => {
+      const initialZ = getInitialTranslateZ(slide);
+    
+      ScrollTrigger.create({
+        trigger: `.${styles.projectsContainer}`,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const zIncrement = progress * 20000;
+          const currentZ = initialZ + zIncrement;
+    
+          // Opacité en fonction de la profondeur
+          let opacity;
+          if (currentZ > -2500) {
+            opacity = mapRange(currentZ, -2500, 0, 0.5, 1);
+          } else {
+            opacity = mapRange(currentZ, -5000, -2500, 0, 0.5);
+          }
+    
+          // Effet inversé : moins flou et plus grand en s'approchant
+          const scale = mapRange(currentZ, -5000, 0, 0.8, 1);
+          const blur = mapRange(currentZ, -5000, 0, 10, 0);
+    
+          slide.style.opacity = opacity;
+          slide.style.transform = `translateX(-50%) translateY(-20%) translateZ(${currentZ}px) scale(${scale})`;
+          slide.style.filter = `blur(${blur}px)`;
+    
+          // Affiche ou cache les images selon la profondeur
+          if (currentZ < 700) {
+            gsap.to(activeSlideImages[index], {
+              opacity: 1,
+              duration: 1.5,
+              ease: "power3.out",
+            });
+          } else {
+            gsap.to(activeSlideImages[index], {
+              opacity: 0,
+              duration: 1.5,
+              ease: "power3.out",
+            });
+          }
+    
+          // 🔈 Détection de slide "active" et lecture du son
+          if (currentZ >= -1900 && currentZ <= -1890) {
+            if (lastActiveIndex !== index) {
+              lastActiveIndex = index;
+              audio.currentTime = 0;
+              audio.play().catch((e) => {
+                // Peut échouer si l'utilisateur n'a pas interagi avec la page
+                console.warn("Impossible de jouer le son :", e);
+              });
+            }
+          }
+        },
+      });
+    });
+    
+
+
+
+
+
+    
+
     // Nettoyage des effets au démontage
     return () => {
       cleanupMouseTrail();
@@ -218,7 +312,6 @@ export default function Home() {
       }
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-    
   }, []);
 
   // Fonction qui modifie les hauteurs et ajoute un margin-right avec délai pour la soundBox
@@ -283,6 +376,8 @@ export default function Home() {
     });
   };
 
+  /************   HTML   *********************************************************/
+
   return (
     <div className={styles.page}>
       <div className={styles.header}>
@@ -308,6 +403,100 @@ export default function Home() {
           <source src="./../sound/ambiance.mp3" type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
+
+        {/*************** PROJECTS **********************************************/}
+
+        <div className={styles.projects}>
+          <div className={styles.projectsContainer}>
+            <div className={styles.activeSlide}>
+              <img src={`/img/amd.png`} />
+              <img src={`/img/vevolve.png`} />
+              <img src={`/img/TS.png`} />
+              <img src={`/img/texeira.png`} />
+              <img src={`/img/bitkraft.png`} />
+              <img src={`/img/fitkids.png`} />
+              <img src={`/img/rotor.png`} />
+            </div>
+
+            <div className={styles.slider}>
+              <div className={styles.slide} id={styles.slide1}>
+                <div className={styles.slideCopy}>
+                  <p>Aux milles délices</p>
+                  <p id={styles.index}>ux - flow - ui</p>
+                </div>
+                <div className={styles.slideImg}>
+                  <img src={`/img/amd.png`} />
+                </div>
+              </div>
+              <div className={styles.slide} id={styles.slide2}>
+                <div className={styles.slideCopy}>
+                  <p>Vevolve</p>
+                  <p id={styles.index}>App - Brand</p>
+                </div>
+                <div className={styles.slideImg}>
+                <img src={`/img/vevolve.png`} />
+                </div>
+              </div>
+              <div className={styles.slide} id={styles.slide3}>
+                <div className={styles.slideCopy}>
+                  <p>Douvitch's SkateShop</p>
+                  <p id={styles.index}>Identité Visuelle, Image</p>
+                </div>
+                <div className={styles.slideImg}>
+                  <img src={`/img/douv.png`} />
+                </div>
+              </div>
+              <div className={styles.slide} id={styles.slide4}>
+                <div className={styles.slideCopy}>
+                  <p>TeamSquare</p>
+                  <p id={styles.index}>Front-end</p>
+                </div>
+                <div className={styles.slideImg}>
+                  <img src={`/img/TS.png`} />
+                </div>
+              </div>
+              <div className={styles.slide} id={styles.slide5}>
+                <div className={styles.slideCopy}>
+                  <p>Texeira Creation</p>
+                  <p id={styles.index}>Web Design</p>
+                </div>
+                <div className={styles.slideImg}>
+                  <img src={`/img/texeira.png`} />
+                </div>
+              </div>
+              <div className={styles.slide} id={styles.slide6}>
+                <div className={styles.slideCopy}>
+                  <p>BITKRAFT Redesign</p>
+                  <p id={styles.index}>UI - UX - 3D</p>
+                </div>
+                <div className={styles.slideImg}>
+                  <img src={`/img/bitkraft.png`} />
+                </div>
+              </div>
+              <div className={styles.slide} id={styles.slide7}>
+                <div className={styles.slideCopy}>
+                  <p>Fitkids</p>
+                  <p id={styles.index}>Branding - DA - App</p>
+                </div>
+                <div className={styles.slideImg}>
+                  <img src={`/img/fitkids.png`} />
+                </div>
+              </div>
+              <div className={styles.slide} id={styles.slide8}>
+              <div className={styles.slideCopy}>
+                  <p>Rotor</p>
+                  <p id={styles.index}>UI - VR</p>
+                </div>
+                <div className={styles.slideImg}>
+                  <img src={`/img/rotor.png`} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/*************** PUZZLE **********************************************/}
+
         <div ref={boxesContainerRef} className={styles.draggableContainer}>
           {/* Boîtes draggable */}
           <img
@@ -376,6 +565,9 @@ export default function Home() {
             className={`draggable-box ${styles.box}`}
           />
         </div>
+
+        {/*************** ABOUT **********************************************/}
+
         <div ref={aboutSectionRef} className={styles.datas}>
           <div className={`${styles.oneData} ${styles.selfRight}`}>
             <h2>
@@ -463,6 +655,8 @@ export default function Home() {
           </div>
         </div>
 
+        {/*************** TOOLS **********************************************/}
+
         <div className={styles.container}>
           <section className={styles.wrapper404}>
             <h1 className={styles.explora}>
@@ -496,10 +690,13 @@ export default function Home() {
           </section>
         </div>
 
+        {/*************** MAIL **********************************************/}
+
         <a href="mailto: vverinpro@gmail.com">
           <div className={styles.splineContainer}>
             <p className={styles.collabCTA}>
-            <span className={styles.sectionNb}>O</span>FFER A DIGITAL EXPERIENCE THAT LIVES UP TO YOUR IDEAS
+              <span className={styles.sectionNb}>O</span>FFER A DIGITAL
+              EXPERIENCE THAT LIVES UP TO YOUR IDEAS
             </p>
             <script
               type="module"
@@ -515,6 +712,8 @@ export default function Home() {
           </div>
         </a>
       </div>
+      {/*************** FOOTER **********************************************/}
+
       <div className={styles.footer}>
         <div className={styles.footerLeft}>
           <a href="mailto: vverinpro@gmail.com">
@@ -527,11 +726,21 @@ export default function Home() {
         </div>
         <div className={styles.footerRight}>
           <div className={styles.footerRightContainer}>
-            <p className={`${styles.fImg}, ${styles.text} text`} onClick={() => scrollToSection(topSectionRef)}>Top</p>
-            <p className={`${styles.fImg}, ${styles.text} text`} onClick={() => scrollToSection(aboutSectionRef)}>About</p>
+            <p
+              className={`${styles.fImg}, ${styles.text} text`}
+              onClick={() => scrollToSection(topSectionRef)}
+            >
+              Top
+            </p>
+            <p
+              className={`${styles.fImg}, ${styles.text} text`}
+              onClick={() => scrollToSection(aboutSectionRef)}
+            >
+              About
+            </p>
             <p className={`${styles.fImg}, ${styles.text} text`}>Project</p>
             <a href="/nowhere">
-            <p className={`${styles.fImg}, ${styles.text} text`}>Nowhere</p>
+              <p className={`${styles.fImg}, ${styles.text} text`}>Nowhere</p>
             </a>
           </div>
         </div>
