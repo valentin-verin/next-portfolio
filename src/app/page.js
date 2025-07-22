@@ -14,6 +14,7 @@ export default function Home() {
   const boxesContainerRef = useRef(null);
   const topSectionRef = useRef(null);
   const aboutSectionRef = useRef(null);
+  const projectsSectionRef = useRef(null);
 
   useEffect(() => {
     
@@ -406,7 +407,7 @@ export default function Home() {
 
         {/*************** PROJECTS **********************************************/}
 
-        <div className={styles.projects}>
+        <div ref={projectsSectionRef} className={styles.projects}>
           <div className={styles.projectsContainer}>
             <div className={styles.activeSlide}>
               <img src={`/img/amd.png`} />
@@ -738,7 +739,12 @@ export default function Home() {
             >
               About
             </p>
-            <p className={`${styles.fImg}, ${styles.text} text`}>Project</p>
+            <p 
+              className={`${styles.fImg}, ${styles.text} text`}
+              onClick={() => scrollToSection(projectsSectionRef)}
+            >
+              Project
+            </p>
             <a href="/nowhere">
               <p className={`${styles.fImg}, ${styles.text} text`}>Nowhere</p>
             </a>
