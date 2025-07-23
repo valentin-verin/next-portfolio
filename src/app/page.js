@@ -459,7 +459,7 @@ export default function Home() {
               <div className={styles.slide} id={styles.slide5}>
                 <div className={styles.slideCopy}>
                   <p>Texeira Creation</p>
-                  <p id={styles.index}>Web Design</p>
+                  <p id={styles.index}>LP Design</p>
                 </div>
                 <div className={styles.slideImg}>
                   <img src={`/img/texeira.png`} />
