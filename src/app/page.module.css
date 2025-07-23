@@ -671,6 +671,8 @@
 }
 
 .slideCopy p {
+  font-family: var(--font-secondary);
+  font-weight: 800;
   text-transform: uppercase;
   text-align: center;
   font-size: 10px;
@@ -678,7 +680,8 @@
 }
 
 .slideCopy p#index {
-  font-size: 8px;
+  font-family: var(--font-primary);
+  font-size: 6px;
   font-weight: 100;
   margin-bottom: 0.75em;
 }
